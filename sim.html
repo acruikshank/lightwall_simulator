@@ -1,0 +1,119 @@
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta charset=utf-8>
+  </head>
+  <body>
+  </body>
+  <script language="javascript" src="node_modules/regl/dist/regl.min.js"></script>
+  <script language="javascript" type="module">
+/*
+TODO:
+* Have sim_hardware listen for pinState update and write them on worker object
+* Have arduino send pin state on digitalWrite
+* Have ws2812 send strip state on show()
+* have worker updates update texture by changing texture data for strip indicated by enable pin
+ */
+
+const NUM_STRIPS = 50;
+const NUM_LEDS = 50;
+const regl = createREGL()
+import mat4 from './deps/gl-mat4/index.js'
+import createCamera from './camera.js'
+import { start } from './sim_hardware.js'
+
+
+const camera = createCamera(regl, {
+  center: [5, 5, 0],
+  distance: 30
+})
+
+const NUM_POINTS = 2500
+const VERT_SIZE = 4 * (3 + 2)
+
+let texdata = Array(NUM_STRIPS).fill().map(() => Array(NUM_LEDS).fill().map(() => [0,0,0]));
+const tex = regl.texture(texdata);
+
+// start workers
+Array(7).fill().forEach((x,controller) => {
+  start('main.cpp', 10).then((w) => {
+    w.addEventListener('message', (e) => {
+      if (e.data.t!=='show') return;
+      [46,40,12,13,43,42,41,45].forEach((n,i) => {
+        const strip = i+8*controller
+        if (w.pins[n]==1 && strip < NUM_STRIPS) texdata[strip] = e.data.c
+      })
+      tex(texdata)
+    })
+
+    setTimeout(() => w.postMessage({t:"serial",d:[0,controller*8]}), 50)
+  })
+})
+
+const pointBuffer = regl.buffer(Array(NUM_POINTS).fill().map(function (x, i) {
+  return [
+    // pos
+    0,
+    (i%50)*.3,
+    (Math.floor(i/50) - 25)*.9,
+    // coord
+    (i%NUM_LEDS+.5)/NUM_STRIPS, 1-(Math.floor(i/NUM_LEDS)+.5)/NUM_LEDS
+  ]
+}))
+
+const drawParticles = regl({
+  vert: `
+  precision mediump float;
+  attribute vec3 pos;
+  attribute vec2 coord;
+  uniform mat4 view, projection;
+  varying vec2 uv;
+  void main() {
+    vec4 cam_pos = view * vec4(pos, 1);
+    gl_PointSize = -300.0/cam_pos.z;
+    gl_Position = projection * cam_pos;
+    uv = coord;
+  }`,
+
+  frag: `
+  precision lowp float;
+  uniform sampler2D tex;
+  varying vec2 uv;
+  void main() {
+    if (length(gl_PointCoord.xy - 0.5) > 0.5) {
+      discard;
+    }
+    gl_FragColor = texture2D(tex,uv);
+  }`,
+
+  attributes: {
+    pos: {
+      buffer: pointBuffer,
+      stride: VERT_SIZE,
+      offset: 0
+    },
+    coord: {
+      buffer: pointBuffer,
+      stride: VERT_SIZE,
+      offset: 12
+    }
+  },
+  uniforms: {
+    tex: tex
+  },
+
+  count: NUM_POINTS,
+
+  primitive: 'points'
+})
+
+regl.frame(() => {
+  regl.clear({
+    depth: 1,
+    color: [0, 0, 0, 1]
+  })
+  camera(() => drawParticles())
+})
+  </script>
+</html>
