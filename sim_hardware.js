@@ -15,6 +15,7 @@ function writeEval(t, delay) {
   setup()
   setInterval(loop, ${delay})
   `
+  console.log(script)
   let w = new Worker(URL.createObjectURL(new Blob([script], {})))
   w.pins = Array(50).fill().map(()=>0)
   w.addEventListener('message', (e) => { if (e.data.t==='pin') w.pins[e.data.p]=e.data.v })
@@ -24,8 +25,10 @@ function writeEval(t, delay) {
 function makeJS(t) {
   return t
     .replace(/\#define(\s+\w+\s*)\((.*?)\)/g, 'const$1 = ($2) =>')
+    .replace(/(\w+)\[\]\s*=\s*\{(.*?)\}/g, '$1 = [$2]')
     .replace(/\#define(\s+\w+)/g, 'const$1 =')
+    .replace(/\(int\)\s*\((.*?)\)/g, 'parseInt($1)')
     .replace(/\w+\s+(\w+)\((.*?)\)\s*\{/g, (_,name,args) => `function ${name}(${args.replace(/\w+\s+(\w+)/g,'$1')}) {`)
-    .replace(/(^|[^\w])(u?int\d*(_t)?|long|bool|WS2812B)\s/g, '$1let ')
+    .replace(/(^|[^\w])(u?int\d*(_t)?|long|float|bool|WS2812B)\s/g, '$1let ')
     .replace(/\#include\s*\<(.*?)(\..*)?\>/g, (_,i) => imports[i])
 }

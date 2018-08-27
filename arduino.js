@@ -12,6 +12,7 @@ function analogRead() { return 0 }
 function analogWrite(pin, value) { postMessage({t:'pin', p:pin, v:value}) }
 function delay(t) { }
 function millis() { return new Date().getTime() - startMillis; }
+function constrain(x,a,b) { return Math.max(a,Math.min(b,x)) }
 const sqrt = Math.sqrt
 const min = Math.min
 const max = Math.max

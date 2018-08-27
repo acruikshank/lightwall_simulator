@@ -14,12 +14,13 @@ const gamma8 = [
 115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
 144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
 177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 ]
+215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255,]
 
-const {invgamma8} = gamma8.reduce((m,v,i) => { return {
-  invgamma8: m.invgamma8.concat(Array(v-m.invgamma8.length).fill(i)),
+const {gamma} = gamma8.reduce((m,v,i) => { return {
+  gamma: m.gamma.concat(Array(v-m.gamma.length).fill(i)),
   b: v
-} }, {invgamma8:[], b:0})
+} }, {gamma:[], b:0})
+const invgamma8 = gamma.concat(Array(256-gamma.length).fill(255))
 
 function WS2812B(numLeds) {
   let colors = Array(numLeds).fill().map(() => [0,0,0])

@@ -1,21 +1,9 @@
 import mat4 from './deps/gl-mat4/index.js'
 const {identity, perspective, lookAt} = mat4
+import {mouseWheel, mouseChange} from './events.js'
 
 export default createCamera
 
-function mouseWheel(cb) {
-  window.addEventListener('wheel', (ev) => {
-    ev.preventDefault()
-    const {deltaX, deltaY, deltaZ} = ev
-    if (deltaX || deltaY || deltaZ)
-      cb(deltaX||0, deltaY||0, deltaZ||0);
-  })
-}
-
-function mouseChange(cb) {
-  const handle = (ev) => { cb(ev.buttons, ev.clientX, ev.clientY) }
-  'enter,leave,down,up,move'.split(',').forEach((t) => window.addEventListener(`mouse${t}`, handle))
-}
 
 function createCamera (regl, props) {
   var cameraState = {
@@ -41,7 +29,7 @@ function createCamera (regl, props) {
 
   var prevX = 0
   var prevY = 0
-  mouseChange(function (buttons, x, y) {
+  mouseChange(renderer, function (buttons, x, y) {
     if (buttons & 1) {
       var dx = (x - prevX) / window.innerWidth
       var dy = (y - prevY) / window.innerHeight
@@ -54,7 +42,7 @@ function createCamera (regl, props) {
     prevY = y
   })
 
-  mouseWheel(function (dx, dy) {
+  mouseWheel(renderer, function (dx, dy) {
     ddistance += dy / window.innerHeight
   })
 

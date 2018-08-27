@@ -3,8 +3,101 @@
   <head>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta charset=utf-8>
+    <style>
+      html, body {
+        margin: 0;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #renderer {
+        width: 100%;
+        flex: auto;
+        height: 80%;
+      }
+
+      #controls {
+        height: 15%;
+        display: flex;
+      }
+
+      #controls svg {
+        flex: 1;
+        height: 75%;
+        margin: 2%;
+      }
+
+      svg path.icon {
+        fill-opacity: 0;
+        stroke-width: 8px;
+        stroke: #666;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      #cycle {
+        cursor: ns-resize;
+      }
+
+      svg path.drum {
+        fill-opacity: .1;
+        fill: #666;
+        stroke-width: 6px;
+        cursor: pointer;
+      }
+
+      #cymbols {
+        cursor: pointer;
+      }
+
+      #cymbols .icon {
+        stroke-width: 7px;
+      }
+
+      svg path.drum:hover {
+        fill-opacity: .5;
+      }
+
+      svg path.drum:active {
+        fill-opacity: 1;
+      }
+    </style>
   </head>
   <body>
+    <canvas id="renderer" width="2880" height="1437"></canvas>
+    <div id="controls">
+      <svg id="drums" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0, 0, 180, 180">
+        <g transform="translate(5, 5)">
+          <path d="M42.5,168.5 C25.931,168.5 12.5,155.069 12.5,138.5 C12.5,121.931 25.931,108.5 42.5,108.5 C59.069,108.5 72.5,121.931 72.5,138.5 C72.5,155.069 59.069,168.5 42.5,168.5 z" class="drum icon"/>
+          <path d="M78.5,96.5 C61.931,96.5 48.5,83.069 48.5,66.5 C48.5,49.931 61.931,36.5 78.5,36.5 C95.069,36.5 108.5,49.931 108.5,66.5 C108.5,83.069 95.069,96.5 78.5,96.5 z" class="drum icon"/>
+          <path d="M150.5,72.5 C133.931,72.5 120.5,59.069 120.5,42.5 C120.5,25.931 133.931,12.5 150.5,12.5 C167.069,12.5 180.5,25.931 180.5,42.5 C180.5,59.069 167.069,72.5 150.5,72.5 z" class="drum icon"/>
+          <path d="M222.5,96.5 C205.931,96.5 192.5,83.069 192.5,66.5 C192.5,49.931 205.931,36.5 222.5,36.5 C239.069,36.5 252.5,49.931 252.5,66.5 C252.5,83.069 239.069,96.5 222.5,96.5 z" class="drum icon"/>
+          <path d="M258.5,168.5 C241.931,168.5 228.5,155.069 228.5,138.5 C228.5,121.931 241.931,108.5 258.5,108.5 C275.069,108.5 288.5,121.931 288.5,138.5 C288.5,155.069 275.069,168.5 258.5,168.5 z" class="drum icon"/>
+        </g>
+      </svg>
+      <svg id="cymbols" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0, 0, 200, 220">
+        <g transform="translate(-19, 5)">
+          <path d="M72.5,12.5 C79.127,12.5 84.5,17.873 84.5,24.5 L84.5,180.5 C84.5,187.127 79.127,192.5 72.5,192.5 C65.873,192.5 60.5,187.127 60.5,180.5 L60.5,132.5 L48.5,132.5 C41.873,132.5 36.5,127.127 36.5,120.5 L36.5,84.5 C36.5,77.873 41.873,72.5 48.5,72.5 L60.5,72.5 L60.5,24.5 C60.5,17.873 65.873,12.5 72.5,12.5 z" class="icon"/>
+          <path d="M132.5,12.5 C125.873,12.5 120.5,17.873 120.5,24.5 L120.5,180.5 C120.5,187.127 125.873,192.5 132.5,192.5 C139.127,192.5 144.5,187.127 144.5,180.5 L144.5,132.5 L156.5,132.5 C163.127,132.5 168.5,127.127 168.5,120.5 L168.5,84.5 C168.5,77.873 163.127,72.5 156.5,72.5 L144.5,72.5 L144.5,24.5 C144.5,17.873 139.127,12.5 132.5,12.5 z" class="icon"/>
+        </g>
+      </svg>
+      <svg id="cycle" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="220, 160, 300, 240">
+        <g>
+          <path d="M305.5,358.5 C269.602,358.5 240.5,329.398 240.5,293.5 C240.5,257.602 269.602,228.5 305.5,228.5 C341.398,228.5 370.5,257.602 370.5,293.5 C370.5,329.398 341.398,358.5 305.5,358.5 z" class="icon"/>
+          <path d="M324.5,204.5 L336.5,180.5" class="icon"/>
+          <path d="M336.5,180.5 L360.5,180.5" class="icon"/>
+          <path d="M324.5,204.5 L444.5,240.5 L492.5,358.5" class="icon"/>
+          <path d="M456.5,216.5 L420.5,300.5 L396.5,276.5" class="icon"/>
+          <path d="M420.5,300.5 L444.5,324.5" class="icon"/>
+          <path d="M384.5,276.5 L408.5,276.5" class="icon"/>
+          <path d="M432.5,324.5 L456.5,324.5" class="icon"/>
+          <path d="M432.5,216.5 L480.5,216.5" class="icon"/>
+        </g>
+      </svg>
+    </div>
   </body>
   <script language="javascript" src="node_modules/regl/dist/regl.min.js"></script>
   <script language="javascript" type="module">
@@ -15,14 +108,16 @@ TODO:
 * Have ws2812 send strip state on show()
 * have worker updates update texture by changing texture data for strip indicated by enable pin
  */
+renderer.width = renderer.offsetWidth * 3;
+renderer.height = renderer.offsetHeight * 3;
 
 const NUM_STRIPS = 50;
 const NUM_LEDS = 50;
-const regl = createREGL()
+const regl = createREGL('#renderer')
 import mat4 from './deps/gl-mat4/index.js'
 import createCamera from './camera.js'
 import { start } from './sim_hardware.js'
-
+import { mouseWheel } from './events.js'
 
 const camera = createCamera(regl, {
   center: [5, 5, 0],
@@ -36,8 +131,10 @@ let texdata = Array(NUM_STRIPS).fill().map(() => Array(NUM_LEDS).fill().map(() =
 const tex = regl.texture(texdata);
 
 // start workers
-Array(7).fill().forEach((x,controller) => {
+const workers = Array(7).fill()
+workers.forEach((x,controller) => {
   start('main.cpp', 10).then((w) => {
+    workers[controller] = w
     w.addEventListener('message', (e) => {
       if (e.data.t!=='show') return;
       [46,40,12,13,43,42,41,45].forEach((n,i) => {
@@ -50,6 +147,24 @@ Array(7).fill().forEach((x,controller) => {
     setTimeout(() => w.postMessage({t:"serial",d:[0,controller*8]}), 50)
   })
 })
+
+function broadcastCommand(cmd) {
+  workers.forEach((w) => w.postMessage({t:"serial",d:cmd}))
+}
+
+// event handlers
+let count = 0;
+mouseWheel(cycle, (dx,dy) => {
+  count += dy;
+  if (count < 0) count = 250+count;
+  if (count >= 250) count -= 250;
+  broadcastCommand([1,count])
+})
+
+document.querySelectorAll('svg .drum').forEach((drum,i) => {
+  drum.addEventListener('mousedown', () => broadcastCommand([2,i]))
+})
+cymbols.addEventListener('mousedown', () => broadcastCommand([3]))
 
 const pointBuffer = regl.buffer(Array(NUM_POINTS).fill().map(function (x, i) {
   return [
@@ -81,7 +196,8 @@ const drawParticles = regl({
   uniform sampler2D tex;
   varying vec2 uv;
   void main() {
-    if (length(gl_PointCoord.xy - 0.5) > 0.5) {
+    float dist = length(gl_PointCoord.xy - 0.5);
+    if (dist > 0.5) {
       discard;
     }
     gl_FragColor = texture2D(tex,uv);
