@@ -17,6 +17,7 @@ const sqrt = Math.sqrt
 const min = Math.min
 const max = Math.max
 const abs = Math.abs
+const sin = Math.sin
 const map = (x,a,b,c,d) => Math.floor(c + (x-a)*(d-c)/(b-a))
 
 let serialData = [];
