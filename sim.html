@@ -114,13 +114,7 @@
   </body>
   <script language="javascript" src="node_modules/regl/dist/regl.min.js"></script>
   <script language="javascript" type="module">
-/*
-TODO:
-* Have sim_hardware listen for pinState update and write them on worker object
-* Have arduino send pin state on digitalWrite
-* Have ws2812 send strip state on show()
-* have worker updates update texture by changing texture data for strip indicated by enable pin
- */
+
 renderer.width = renderer.offsetWidth * 3;
 renderer.height = renderer.offsetHeight * 3;
 
@@ -162,7 +156,6 @@ workers.forEach((x,controller) => {
 })
 
 function broadcastCommand(cmd) {
-  console.log("BROADCASTING", cmd)
   workers.forEach((w) => w.postMessage({t:"serial",d:cmd}))
 }
 
