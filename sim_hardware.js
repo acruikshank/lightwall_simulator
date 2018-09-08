@@ -4,7 +4,8 @@ export function start(file, delay) {
   return Promise.all([
     fetch(file).then((t) => t.text()),
     fetch('arduino.js').then((t) => t.text()).then((t) => imports['Arduino'] = t),
-    fetch('ws2812b.js').then((t) => t.text()).then((t) => imports['WS2812B'] = t)
+    fetch('ws2812b.js').then((t) => t.text()).then((t) => imports['WS2812B'] = t),
+    fetch('OctoWS2811.js').then((t) => t.text()).then((t) => imports['OctoWS2811'] = t),
   ])
   .then((t) => writeEval(t[0], delay))
 }
@@ -28,8 +29,10 @@ function makeJS(t) {
     .replace(/(\w+)\[\]\s*=\s*\{(.*?)\}/g, '$1 = [$2]')
     .replace(/\#define(\s+\w+)/g, 'const$1 =')
     .replace(/\(int\)\s*\((.*?)\)/g, 'parseInt($1)')
+    .replace(/(const|unsigned|DMAMEM)\s+/g, '')
     .replace(/\w+\s+(\w+)\((.*?)\)\s*\{/g, (_,name,args) => `function ${name}(${args.replace(/\w+\s+(\w+)/g,'$1')}) {`)
     .replace(/(^|[^\w])(u?int\d*(_t)?|long|float|bool)\s+(\w+)\[(.*?)\]/g, '$1let $4 = Array($5).fill()')
+    .replace(/OctoWS2811\s+(\w+)\((.*)\)/g, 'let $1 = OctoWS2811($2)')
     .replace(/(^|[^\w])(u?int\d*(_t)?|long|float|bool|WS2812B)\s/g, '$1let ')
     .replace(/\#include\s*\<(.*?)(\..*)?\>/g, (_,i) => imports[i])
 }

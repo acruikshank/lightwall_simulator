@@ -13,11 +13,14 @@ function analogWrite(pin, value) { postMessage({t:'pin', p:pin, v:value}) }
 function delay(t) { }
 function millis() { return new Date().getTime() - startMillis; }
 function constrain(x,a,b) { return Math.max(a,Math.min(b,x)) }
+const M_PI = Math.PI
 const sqrt = Math.sqrt
 const min = Math.min
 const max = Math.max
 const abs = Math.abs
 const sin = Math.sin
+const cos = Math.cos
+const pow = Math.pow
 const map = (x,a,b,c,d) => Math.floor(c + (x-a)*(d-c)/(b-a))
 
 let serialData = [];
