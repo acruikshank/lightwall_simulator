@@ -1,6 +1,6 @@
-import isTypedArray from './is-typed-array';
+var isTypedArray = require('./is-typed-array')
 
-export default function isNDArrayLike (obj) {
+module.exports = function isNDArrayLike (obj) {
   return (
     !!obj &&
     typeof obj === 'object' &&
@@ -10,4 +10,4 @@ export default function isNDArrayLike (obj) {
     obj.shape.length === obj.stride.length &&
     (Array.isArray(obj.data) ||
       isTypedArray(obj.data)))
-};
+}

@@ -1,12 +1,7 @@
 (function (global, factory) {
-  try {
-    export const createREGL = factory();
-  } catch(e) {
-    console.error(e)
-  	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  	typeof define === 'function' && define.amd ? define(factory) :
-  	// (global.createREGL = factory());
-  }
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.createREGL = factory());
 }(this, (function () { 'use strict';
 
 var isTypedArray = function (x) {

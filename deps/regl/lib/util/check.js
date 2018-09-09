@@ -4,9 +4,8 @@
 // a browserify transform for optimized/minified bundles.
 //
 /* globals atob */
-import isTypedArray from './is-typed-array';
-
-import extend from './extend';
+var isTypedArray = require('./is-typed-array')
+var extend = require('./extend')
 
 var endl = '\n'
 
@@ -618,7 +617,7 @@ function checkTextureCube (texture, info, faces, limits) {
   }
 }
 
-export default extend(check, {
+module.exports = extend(check, {
   optional: checkOptional,
   raise: raise,
   commandRaise: commandRaise,
@@ -640,4 +639,4 @@ export default extend(check, {
   guessCommand: guessCommand,
   texture2D: checkTexture2D,
   textureCube: checkTextureCube
-});
+})

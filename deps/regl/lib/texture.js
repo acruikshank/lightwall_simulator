@@ -1,15 +1,16 @@
-import check from './util/check';
-import extend from './util/extend';
-import values from './util/values';
-import isTypedArray from './util/is-typed-array';
-import isNDArrayLike from './util/is-ndarray';
-import pool from './util/pool';
-import convertToHalfFloat from './util/to-half-float';
-import isArrayLike from './util/is-array-like';
-import flattenUtils from './util/flatten';
-import isPow2 from './util/is-pow2';
-import dtypes from './constants/arraytypes.json';
-import arrayTypes from './constants/arraytypes.json';
+var check = require('./util/check')
+var extend = require('./util/extend')
+var values = require('./util/values')
+var isTypedArray = require('./util/is-typed-array')
+var isNDArrayLike = require('./util/is-ndarray')
+var pool = require('./util/pool')
+var convertToHalfFloat = require('./util/to-half-float')
+var isArrayLike = require('./util/is-array-like')
+var flattenUtils = require('./util/flatten')
+var isPow2 = require('./util/is-pow2')
+
+var dtypes = require('./constants/arraytypes.json')
+var arrayTypes = require('./constants/arraytypes.json')
 
 var GL_COMPRESSED_TEXTURE_FORMATS = 0x86A3
 
@@ -323,7 +324,7 @@ function getTextureSize (format, type, width, height, isMipmap, isCube) {
   }
 }
 
-export default function createTextureSet (
+module.exports = function createTextureSet (
   gl, extensions, limits, reglPoll, contextState, stats, config) {
   // -------------------------------------------------------
   // Initialize constants and parameter tables here
@@ -1655,4 +1656,4 @@ export default function createTextureSet (
     },
     restore: restoreTextures
   }
-};
+}

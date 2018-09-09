@@ -2,7 +2,7 @@ var GL_QUERY_RESULT_EXT = 0x8866
 var GL_QUERY_RESULT_AVAILABLE_EXT = 0x8867
 var GL_TIME_ELAPSED_EXT = 0x88BF
 
-export default function (gl, extensions) {
+module.exports = function (gl, extensions) {
   var extTimer = extensions.ext_disjoint_timer_query
 
   if (!extTimer) {
@@ -135,4 +135,4 @@ export default function (gl, extensions) {
       queryPool.length = 0
     }
   }
-};
+}

@@ -1,23 +1,23 @@
-import check from './lib/util/check.js';
-import extend from './lib/util/extend.js';
-import dynamic from './lib/dynamic.js';
-import raf from './lib/util/raf.js';
-import clock from './lib/util/clock.js';
-import createStringStore from './lib/strings.js';
-import initWebGL from './lib/webgl.js';
-import wrapExtensions from './lib/extension.js';
-import wrapLimits from './lib/limits.js';
-import wrapBuffers from './lib/buffer.js';
-import wrapElements from './lib/elements.js';
-import wrapTextures from './lib/texture.js';
-import wrapRenderbuffers from './lib/renderbuffer.js';
-import wrapFramebuffers from './lib/framebuffer.js';
-import wrapAttributes from './lib/attribute.js';
-import wrapShaders from './lib/shader.js';
-import wrapRead from './lib/read.js';
-import createCore from './lib/core.js';
-import createStats from './lib/stats.js';
-import createTimer from './lib/timer.js';
+var check = require('./lib/util/check')
+var extend = require('./lib/util/extend')
+var dynamic = require('./lib/dynamic')
+var raf = require('./lib/util/raf')
+var clock = require('./lib/util/clock')
+var createStringStore = require('./lib/strings')
+var initWebGL = require('./lib/webgl')
+var wrapExtensions = require('./lib/extension')
+var wrapLimits = require('./lib/limits')
+var wrapBuffers = require('./lib/buffer')
+var wrapElements = require('./lib/elements')
+var wrapTextures = require('./lib/texture')
+var wrapRenderbuffers = require('./lib/renderbuffer')
+var wrapFramebuffers = require('./lib/framebuffer')
+var wrapAttributes = require('./lib/attribute')
+var wrapShaders = require('./lib/shader')
+var wrapRead = require('./lib/read')
+var createCore = require('./lib/core')
+var createStats = require('./lib/stats')
+var createTimer = require('./lib/timer')
 
 var GL_COLOR_BUFFER_BIT = 16384
 var GL_DEPTH_BUFFER_BIT = 256
@@ -41,7 +41,7 @@ function find (haystack, needle) {
   return -1
 }
 
-export default function wrapREGL (args) {
+module.exports = function wrapREGL (args) {
   var config = initWebGL(args)
   if (!config) {
     return null
@@ -596,4 +596,4 @@ export default function wrapREGL (args) {
   config.onDone(null, regl)
 
   return regl
-};
+}

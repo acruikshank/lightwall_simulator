@@ -1,4 +1,4 @@
-import loop from './loop';
+var loop = require('./loop')
 
 var GL_BYTE = 5120
 var GL_UNSIGNED_BYTE = 5121
@@ -98,4 +98,4 @@ var pool = createPool()
 // zero pool for initial zero data
 pool.zero = createPool()
 
-export default pool;
+module.exports = pool

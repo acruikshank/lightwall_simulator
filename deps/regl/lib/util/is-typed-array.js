@@ -1,4 +1,4 @@
-export default function (x) {
+module.exports = function (x) {
   return (
     x instanceof Uint8Array ||
     x instanceof Uint16Array ||
@@ -10,4 +10,4 @@ export default function (x) {
     x instanceof Float64Array ||
     x instanceof Uint8ClampedArray
   )
-};
+}

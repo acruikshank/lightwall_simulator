@@ -1,9 +1,9 @@
-import Stream from 'stream';
+var Stream = require('stream')
 var PassThrough = Stream.PassThrough
 var Transform = Stream.Transform
-import util from 'util';
-import path from 'path';
-import fs from 'fs';
+var util = require('util')
+var path = require('path')
+var fs = require('fs')
 
 var REGL_PATH = path.normalize(path.join(__dirname,
   '../regl.js'))
@@ -27,11 +27,11 @@ ReplaceREGL.prototype._flush = function (cb) {
   cb()
 }
 
-export default function (file, options) {
+module.exports = function (file, options) {
   var nfile = path.normalize(file)
   if ((options._flags && options._flags.debug) ||
     (nfile !== REGL_PATH && nfile !== REGL_MAIN_PATH)) {
     return new PassThrough()
   }
   return new ReplaceREGL()
-};
+}

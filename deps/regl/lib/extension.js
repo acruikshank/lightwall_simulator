@@ -1,6 +1,6 @@
-import check from './util/check';
+var check = require('./util/check')
 
-export default function createExtensionCache (gl, config) {
+module.exports = function createExtensionCache (gl, config) {
   var extensions = {}
 
   function tryLoadExtension (name_) {
@@ -34,4 +34,4 @@ export default function createExtensionCache (gl, config) {
       })
     }
   }
-};
+}

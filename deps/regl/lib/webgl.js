@@ -1,7 +1,6 @@
 // Context and canvas creation helper functions
-import check from './util/check';
-
-import extend from './util/extend';
+var check = require('./util/check')
+var extend = require('./util/extend')
 
 function createCanvas (element, onDone, pixelRatio) {
   var canvas = document.createElement('canvas')
@@ -99,7 +98,7 @@ function getElement (desc) {
   return desc
 }
 
-export default function parseArgs (args_) {
+module.exports = function parseArgs (args_) {
   var args = args_ || {}
   var element, container, canvas, gl
   var contextAttributes = {}
@@ -202,4 +201,4 @@ export default function parseArgs (args_) {
     onDone: onDone,
     onDestroy: onDestroy
   }
-};
+}

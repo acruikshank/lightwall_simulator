@@ -67,10 +67,10 @@ function unbox (x, path) {
   return x
 }
 
-export default {
+module.exports = {
   DynamicVariable: DynamicVariable,
   define: defineDynamic,
   isDynamic: isDynamic,
   unbox: unbox,
   accessor: toAccessorString
-};
+}

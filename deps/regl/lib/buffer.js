@@ -1,16 +1,16 @@
-import check from './util/check';
-import isTypedArray from './util/is-typed-array';
-import isNDArrayLike from './util/is-ndarray';
-import values from './util/values';
-import pool from './util/pool';
-import flattenUtil from './util/flatten';
+var check = require('./util/check')
+var isTypedArray = require('./util/is-typed-array')
+var isNDArrayLike = require('./util/is-ndarray')
+var values = require('./util/values')
+var pool = require('./util/pool')
+var flattenUtil = require('./util/flatten')
 
 var arrayFlatten = flattenUtil.flatten
 var arrayShape = flattenUtil.shape
 
-import arrayTypes from './constants/arraytypes.json';
-import bufferTypes from './constants/dtypes.json';
-import usageTypes from './constants/usage.json';
+var arrayTypes = require('./constants/arraytypes.json')
+var bufferTypes = require('./constants/dtypes.json')
+var usageTypes = require('./constants/usage.json')
 
 var GL_STATIC_DRAW = 0x88E4
 var GL_STREAM_DRAW = 0x88E0
@@ -47,7 +47,7 @@ function transpose (
   }
 }
 
-export default function wrapBufferState (gl, stats, config, attributeState) {
+module.exports = function wrapBufferState (gl, stats, config, attributeState) {
   var bufferCount = 0
   var bufferSet = {}
 
@@ -410,4 +410,4 @@ export default function wrapBufferState (gl, stats, config, attributeState) {
 
     _initBuffer: initBufferFromData
   }
-};
+}

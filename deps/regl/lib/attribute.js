@@ -17,7 +17,7 @@ function AttributeRecord () {
   this.divisor = 0
 }
 
-export default function wrapAttributeState (
+module.exports = function wrapAttributeState (
   gl,
   extensions,
   limits,
@@ -33,4 +33,4 @@ export default function wrapAttributeState (
     scope: {},
     state: attributeBindings
   }
-};
+}

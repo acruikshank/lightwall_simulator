@@ -1,4 +1,4 @@
-import pool from './util/pool';
+var pool = require('./util/pool')
 
 var GL_SUBPIXEL_BITS = 0x0D50
 var GL_RED_BITS = 0x0D52
@@ -45,7 +45,7 @@ var GL_FRAMEBUFFER_COMPLETE = 0x8CD5
 var GL_COLOR_ATTACHMENT0 = 0x8CE0
 var GL_COLOR_BUFFER_BIT = 0x4000
 
-export default function (gl, extensions) {
+module.exports = function (gl, extensions) {
   var maxAnisotropic = 1
   if (extensions.ext_texture_filter_anisotropic) {
     maxAnisotropic = gl.getParameter(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT)
@@ -152,4 +152,4 @@ export default function (gl, extensions) {
     readFloat: readFloat,
     npotTextureCube: npotTextureCube
   }
-};
+}

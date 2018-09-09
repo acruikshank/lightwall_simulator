@@ -1,9 +1,9 @@
-import pool from './pool';
+var pool = require('./pool')
 
-export default {
+module.exports = {
   shape: arrayShape,
   flatten: flattenArray
-};
+}
 
 function flatten1D (array, nx, out) {
   for (var i = 0; i < nx; ++i) {

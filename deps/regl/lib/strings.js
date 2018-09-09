@@ -1,4 +1,4 @@
-export default function createStringStore () {
+module.exports = function createStringStore () {
   var stringIds = {'': 0}
   var stringValues = ['']
   return {
@@ -16,4 +16,4 @@ export default function createStringStore () {
       return stringValues[id]
     }
   }
-};
+}
