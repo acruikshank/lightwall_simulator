@@ -140,7 +140,7 @@ const tex = regl.texture(texdata);
 // start workers
 const workers = Array(7).fill()
 workers.forEach((x,controller) => {
-  start('teensy_main.cpp', 10).then((w) => {
+  start('main.cpp', 10).then((w) => {
     workers[controller] = w
     w.addEventListener('message', (e) => {
       if (e.data.t!=='show') return;
