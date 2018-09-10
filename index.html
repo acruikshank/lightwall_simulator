@@ -118,8 +118,9 @@
 renderer.width = renderer.offsetWidth * 3;
 renderer.height = renderer.offsetHeight * 3;
 
-const NUM_STRIPS = 50;
-const NUM_LEDS = 50;
+const NUM_STRIPS = 8;
+const STRIPS_PER_CONTROLLER = 4;
+const NUM_LEDS = 10;
 const regl = createREGL('#renderer')
 import mat4 from './deps/gl-mat4/index.js'
 import createCamera from './camera.js'
@@ -127,35 +128,39 @@ import { start } from './sim_hardware.js'
 import { mouseWheel } from './events.js'
 
 const camera = createCamera(regl, {
-  center: [5, 5, 0],
-  distance: 30
+  center: [10, 1.5, 0],
+  distance: 1
 })
 
-const NUM_POINTS = 2500
+const NUM_POINTS = 80
 const VERT_SIZE = 4 * (3 + 2)
 
 let texdata = Array(NUM_STRIPS).fill().map(() => Array(NUM_LEDS).fill().map(() => [0,0,0]));
 const tex = regl.texture(texdata);
 
+// start socket
+const ws = new WebSocket("ws://localhost:8080/")
+
 // start workers
-const workers = Array(7).fill()
+const workers = Array(2).fill()
 workers.forEach((x,controller) => {
   start('teensy_main.cpp', 10).then((w) => {
     workers[controller] = w
     w.addEventListener('message', (e) => {
       if (e.data.t!=='show') return;
-      Array(8).fill().forEach((n,i) => {
-        const strip = i+8*controller
+      Array(STRIPS_PER_CONTROLLER).fill().forEach((n,i) => {
+        const strip = i+STRIPS_PER_CONTROLLER*controller
         if (strip < NUM_STRIPS) texdata[strip] = e.data.c.slice(i*NUM_LEDS, (i+1)*NUM_LEDS)
       })
       tex(texdata)
     })
 
-    setTimeout(() => w.postMessage({t:"serial",d:[0,controller*8]}), 50)
+    setTimeout(() => w.postMessage({t:"serial",d:[0,controller*STRIPS_PER_CONTROLLER]}), 50)
   })
 })
 
 function broadcastCommand(cmd) {
+  ws.send(new Uint8Array(cmd))
   workers.forEach((w) => w.postMessage({t:"serial",d:cmd}))
 }
 
@@ -186,11 +191,11 @@ pump.addEventListener('mousemove', (e) => {
 const pointBuffer = regl.buffer(Array(NUM_POINTS).fill().map(function (x, i) {
   return [
     // pos
-    0,
-    (i%50)*.3,
-    (Math.floor(i/50) - 25)*.9,
+    3,
+    (i%NUM_LEDS)*.3,
+    (Math.floor(i/NUM_LEDS) - NUM_LEDS/2)*.3,
     // coord
-    (i%NUM_LEDS+.5)/NUM_STRIPS, 1-(Math.floor(i/NUM_LEDS)+.5)/NUM_LEDS
+    (i%NUM_LEDS+.5)/NUM_LEDS, 1-(Math.floor(i/NUM_LEDS)+.5)/NUM_STRIPS
   ]
 }))
 

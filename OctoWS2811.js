@@ -26,7 +26,7 @@ const {gamma} = gamma8.reduce((m,v,i) => { return {
 const invgamma8 = gamma.concat(Array(256-gamma.length).fill(255))
 
 function OctoWS2811(ledsPerStrip, displayMemory, drawingMemory, config) {
-  let colors = Array(8*ledsPerStrip).fill().map(() => [0,0,0])
+  let colors = Array(4*ledsPerStrip).fill().map(() => [0,0,0])
   return {
     begin: () => {},
     setPixel: (index, c) => { colors[index] = [invgamma8[(c>>16)&0xff], invgamma8[(c>>8)&0xff], invgamma8[c&0xff]] },
