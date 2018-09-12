@@ -1,0 +1,22 @@
+<html>
+ <body>
+   <img id="logo" src="artdev.png">
+   <canvas id="c"></canvas>
+   <canvas id="3"></canvas>
+ </body>
+ <script>
+logo.onload = () => {
+  c.height = logo.height
+  c.width = logo.width
+  const ctx = c.getContext('2d')
+  ctx.drawImage(logo, 0, 0)
+  const data = ctx.getImageData(0,0,c.width,c.height).data
+  const index = (i) => 4*((c.height - 1 - i%c.height) * c.width + parseInt(i/c.height))
+  const wordSize = 32
+  const shifts = Array(wordSize).fill().map((x,i) => i)
+  const bits = Array(Math.ceil(c.width*c.height/wordSize)).fill().map((x,i) => shifts.reduce((m,s) => m+Math.abs((data[index(wordSize*i+s)]?1:0)<<s), 0))
+
+  console.log(bits.map((b)=>b>999?'0x'+b.toString(16):b).join(','))
+}
+ </script>
+</html>

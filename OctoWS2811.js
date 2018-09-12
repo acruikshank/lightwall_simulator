@@ -30,6 +30,7 @@ function OctoWS2811(ledsPerStrip, displayMemory, drawingMemory, config) {
   return {
     begin: () => {},
     setPixel: (index, c) => { colors[index] = [invgamma8[(c>>16)&0xff], invgamma8[(c>>8)&0xff], invgamma8[c&0xff]] },
+    getPixel: (index) => { const c = colors[index]; return (gamma8[c[0]]<<16) + (gamma8[c[1]]<<8) + gamma8[c[2]] },
     show: () => { postMessage({t:'show', c:colors}) },
     // numPixels: () => numLeds,
   }

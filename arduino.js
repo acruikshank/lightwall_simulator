@@ -22,6 +22,7 @@ const sin = Math.sin
 const cos = Math.cos
 const pow = Math.pow
 const map = (x,a,b,c,d) => Math.floor(c + (x-a)*(d-c)/(b-a))
+const random = (low,high) => Math.floor(low + Math.random()*(high-low))
 
 let serialData = [];
 const Serial = {
