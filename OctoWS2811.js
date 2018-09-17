@@ -18,6 +18,7 @@ const gamma8 = [
 
 const WS2811_GRB = 1
 const WS2811_800kHz = 2
+const WS2811_RGB = 4
 
 const {gamma} = gamma8.reduce((m,v,i) => { return {
   gamma: m.gamma.concat(Array(v-m.gamma.length).fill(i)),
